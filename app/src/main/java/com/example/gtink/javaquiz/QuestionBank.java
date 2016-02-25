@@ -10,8 +10,6 @@ package com.example.gtink.javaquiz;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class QuestionBank {
 
     final private List<Question> mQuestionList = new ArrayList<>();
