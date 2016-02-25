@@ -11,17 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionBank {
-
-    final private List<Question> mQuestionList = new ArrayList<>();
+    private int num_question;
+    private List<Question> mQuestionList;
     public int mCur = -1;
     public QuestionBank() {
+        mQuestionList = new ArrayList<>();
         mQuestionList.add(new Question(R.string.question_variable, false));
         mQuestionList.add(new Question(R.string.question_size, true));
         mQuestionList.add(new Question(R.string.question_default, false));
         mQuestionList.add(new Question(R.string.question_class, true));
         mQuestionList.add(new Question(R.string.question_poly, false));
 
+        num_question = mQuestionList.size();
     }
+
+    public int getNum_question() {
+        return num_question;
+    }
+
     public int  getCurrentQuestionIndex(){
         return mCur;
     }
@@ -35,7 +42,7 @@ public class QuestionBank {
     public boolean hasLessQuestion(){
         return mCur < mQuestionList.size()+1;
     }
-    public int num_question = mQuestionList.size()-1;
+
 
     public void generateQuestion(){
         if (hasMoreQuestion())
@@ -53,6 +60,7 @@ public class QuestionBank {
     public boolean questionAnswer() {
         return mQuestionList.get(mCur).isAnswer();
     }
+
 }
 
 class Question {

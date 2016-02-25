@@ -16,21 +16,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MainActivity";
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mCheatButton;
     private ImageButton mNextButton;
     private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
     private static final String KEY_INDEX = "index";
     public int score = 0;
     public static final String EXTRA_SCORE= "score";
+    private boolean mIsCheater;
 
     private com.example.gtink.javaquiz.QuestionBank mQuestionBank;
-    public boolean MaxScore() {return score > 4;}
+    public boolean MaxScore() {return score == mQuestionBank.getNum_question();}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mIsCheater = false;
                 if (mQuestionBank.hasMoreQuestion()) {
                     mQuestionBank.generateQuestion();
                     mQuestionTextView.setText(mQuestionBank.questionTextID());
@@ -96,6 +100,17 @@ public class MainActivity extends AppCompatActivity {
                     mTrueButton.setEnabled(false);
                     mPreviousButton.setEnabled(false);
                 }
+            }
+        });
+        mCheatButton = (Button)findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent j = new Intent(MainActivity.this, CheatActivity.class);
+                boolean answerIsTrue = mQuestionBank.questionAnswer();
+                j.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, answerIsTrue);
+                startActivityForResult(j, 0);
             }
         });
     }
@@ -143,14 +158,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressed) {
-        if (userPressed == mQuestionBank.questionAnswer()) {
-            Toast.makeText(this, R.string.correct,Toast.LENGTH_SHORT).show();
-            score = score +1;
-            mFalseButton.setEnabled(false);
-            mTrueButton.setEnabled(false);
+        if (mIsCheater) {
+            Toast.makeText(this, R.string.judgment_toast, Toast.LENGTH_SHORT).show();
 
-        } else {
-            Toast.makeText(this, R.string.incorrect,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.incorrect, Toast.LENGTH_SHORT).show();
         }
+        else {
+            if(userPressed == mQuestionBank.questionAnswer()){
+                Toast.makeText(this, R.string.correct, Toast.LENGTH_SHORT).show();
+        }
+    }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        mIsCheater = data.getBooleanExtra(CheatActivity.EXTRA_ANSWER_SHOWN, false);
     }
 }

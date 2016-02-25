@@ -12,13 +12,9 @@ public class CongratsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_congrats);
         initScore();
     }
-    private void initScore(){
+    private void initScore() {
         int score = getIntent().getIntExtra(MainActivity.EXTRA_SCORE, 0);
-        TextView view = (TextView)findViewById(R.id.score_textview);
+        TextView view = (TextView) findViewById(R.id.score_textview);
         view.setText("Score: " + score);
     }
-    @Override
-    public void onBackPressed() {
-    }
-
 }
