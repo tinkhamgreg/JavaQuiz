@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">JavaQuiz</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="question_text_view">Welcome to your quiz!</string>
+    <string name="question_variable">You can compare an integer variable with a boolean variable.</string>
+    <string name="question_size">The size of a short variable is 32bits long.</string>
+    <string name="question_default">What is the default value of a Boolean variable?</string>
+    <string name="question_class">A java file can contain only one public class.</string>
+    <string name="question_poly">Polymorphism is the ability of an object to take on many forms.</string>
+    <string name="correct">You are correct!</string>
+    <string name="incorrect">Try again!</string>
+    <string name="next_button">Next</string>
+    <string name="previous_button">Previous</string>
+    <string name="no_more_question">No more questions!</string>
+    <string name="congrats">Congratulations! You have successfully completed the quiz!</string>
+</resources>
