@@ -6,14 +6,17 @@
  */
 package com.example.gtink.javaquiz;
 
-
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class QuestionBank {
-    private int num_question;
     private List<Question> mQuestionList;
-    public int mCur = -1;
+    private Integer mCur = -1;
+    public HashMap<Integer, Integer> mScore;
+    public HashMap<Integer, Integer> mCheat;
+
     public QuestionBank() {
         mQuestionList = new ArrayList<>();
         mQuestionList.add(new Question(R.string.question_variable, false));
@@ -21,12 +24,13 @@ public class QuestionBank {
         mQuestionList.add(new Question(R.string.question_default, false));
         mQuestionList.add(new Question(R.string.question_class, true));
         mQuestionList.add(new Question(R.string.question_poly, false));
+        mQuestionList.add(new Question(R.string.question_def, true));
+        mQuestionList.add(new Question(R.string.question_mem, true));
+        mQuestionList.add(new Question(R.string.question_dec, true));
+        mQuestionList.add(new Question(R.string.question_stat, false));
+        mQuestionList.add(new Question(R.string.question_arr, false));
 
-        num_question = mQuestionList.size();
-    }
 
-    public int getNum_question() {
-        return num_question;
     }
 
     public int  getCurrentQuestionIndex(){
@@ -61,7 +65,62 @@ public class QuestionBank {
         return mQuestionList.get(mCur).isAnswer();
     }
 
+
+    public  void score() {
+        mScore = new HashMap<>();
+        mScore.put(0, 0);
+        mScore.put(1, 0);
+        mScore.put(2, 0);
+        mScore.put(3, 0);
+        mScore.put(4, 0);
+        mScore.put(5, 0);
+        mScore.put(6, 0);
+        mScore.put(7, 0);
+        mScore.put(8, 0);
+        mScore.put(9, 0);
+    }
+
+    public void setScoretrue() {
+        mScore.put(mCur,1);
+    }
+    public void setScorefalse() {
+        mScore.put(mCur,0);
+    }
+    public int getScoreLength(){
+        return mScore.size();
+    }
+
+    public  void cheat() {
+        mCheat = new HashMap<>();
+        mCheat.put(0, 0);
+        mCheat.put(1, 0);
+        mCheat.put(2, 0);
+        mCheat.put(3, 0);
+        mCheat.put(4, 0);
+        mCheat.put(5, 0);
+        mCheat.put(6, 0);
+        mCheat.put(7, 0);
+        mCheat.put(8, 0);
+        mCheat.put(9, 0);
+    }
+
+    private void setCheattrue() {
+        mCheat.put(mCur,1);
+    }
+    private void setCheatfalse() {
+        mCheat.put(mCur,0);
+    }
+    public void checkCheat() {
+        int check = mScore.get(mCur);
+        if (check == 0) {
+            setCheattrue();
+        }
+       if (check ==1){
+           setCheatfalse();
+       }
+    }
 }
+
 
 class Question {
     private int mTextResID;

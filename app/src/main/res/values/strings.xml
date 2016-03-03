@@ -8,6 +8,11 @@
     <string name="question_default">What is the default value of a Boolean variable?</string>
     <string name="question_class">A java file can contain only one public class.</string>
     <string name="question_poly">Polymorphism is the ability of an object to take on many forms.</string>
+    <string name="question_def">Every program in Java consists of at least one class definition that is defined by the programmer.</string>
+    <string name="question_mem">Members of a class specified as private are accessible only to the methods of the class.</string>
+    <string name="question_dec">A method declared as static cannot access non-static class members.</string>
+    <string name="question_stat">A static class method can be invoked by simply using the name of the method alone.</string>
+    <string name="question_arr">One of the features of Java is that an array can store many different types of values.</string>
     <string name="correct">You are correct!</string>
     <string name="incorrect">Try again!</string>
     <string name="next_button">Next</string>
@@ -18,4 +23,7 @@
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_button">Show Answer</string>
     <string name="judgment_toast">Cheating is wrong.</string>
+    <string name="status_button">Check Your Score</string>
+    <string name="score">Your Score is:</string>
+    <string name="cheat">Questions Cheated:</string>
 </resources>

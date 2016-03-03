@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,16 +25,19 @@ public class MainActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mCheatButton;
+    private Button mStatusButton;
     private ImageButton mNextButton;
     private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
     private static final String KEY_INDEX = "index";
-    public int score = 0;
+    private int uscore = 0;
+    private int cheat = 0;
     public static final String EXTRA_SCORE= "score";
+    public static final String EXTRA_CHEAT= "cheat";
     private boolean mIsCheater;
 
     private com.example.gtink.javaquiz.QuestionBank mQuestionBank;
-    public boolean MaxScore() {return score == mQuestionBank.getNum_question();}
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,8 +50,11 @@ public class MainActivity extends AppCompatActivity {
         mNextButton = (ImageButton) findViewById(R.id.next_button);
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
         mPreviousButton = (ImageButton) findViewById(R.id.previous_button);
+        mStatusButton = (Button) findViewById(R.id.status_button);
 
         mQuestionBank = new com.example.gtink.javaquiz.QuestionBank();
+        mQuestionBank.score();
+        mQuestionBank.cheat();
         if (savedInstanceState != null) {
             int mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             mQuestionBank.setCurrentQuestionIndex(mCurrentIndex);
@@ -78,13 +85,14 @@ public class MainActivity extends AppCompatActivity {
                     mQuestionTextView.setText(mQuestionBank.questionTextID());
                     mFalseButton.setEnabled(true);
                     mTrueButton.setEnabled(true);
-                } else {
-
                 }
-                if(MaxScore()){
-                    Intent intent = new Intent(MainActivity.this, CongratsActivity.class);
-                    intent.putExtra(EXTRA_SCORE, score);
-                    startActivity(intent);
+                else {
+                    int uscore = Collections.frequency(mQuestionBank.mScore.values(), 1);
+                    int cheat = Collections.frequency(mQuestionBank.mCheat.values(), 1);
+                    Intent e = new Intent(MainActivity.this, ScoreActivity.class);
+                    e.putExtra(EXTRA_SCORE, uscore);
+                    e.putExtra(EXTRA_CHEAT, cheat);
+                    startActivity(e);
                 }
             }
         });
@@ -111,6 +119,21 @@ public class MainActivity extends AppCompatActivity {
                 boolean answerIsTrue = mQuestionBank.questionAnswer();
                 j.putExtra(CheatActivity.EXTRA_ANSWER_IS_TRUE, answerIsTrue);
                 startActivityForResult(j, 0);
+            }
+        });
+
+        mStatusButton = (Button)findViewById(R.id.status_button);
+
+        mStatusButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                int uscore = Collections.frequency(mQuestionBank.mScore.values(), 1);
+                int cheat = Collections.frequency(mQuestionBank.mCheat.values(), 1);
+                Intent e = new Intent(MainActivity.this, ScoreActivity.class);
+                e.putExtra(EXTRA_SCORE, uscore);
+                e.putExtra(EXTRA_CHEAT, cheat);
+                startActivity(e);
             }
         });
     }
@@ -160,15 +183,21 @@ public class MainActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPressed) {
         if (mIsCheater) {
             Toast.makeText(this, R.string.judgment_toast, Toast.LENGTH_SHORT).show();
+            mQuestionBank.checkCheat();
+        }
 
-            Toast.makeText(this, R.string.incorrect, Toast.LENGTH_SHORT).show();
-        }
         else {
-            if(userPressed == mQuestionBank.questionAnswer()){
+            if(userPressed == mQuestionBank.questionAnswer()) {
                 Toast.makeText(this, R.string.correct, Toast.LENGTH_SHORT).show();
+                mQuestionBank.setScoretrue();
+            }
+            else {
+                    Toast.makeText(this, R.string.incorrect, Toast.LENGTH_SHORT).show();
+                    mQuestionBank.setScorefalse();
+                }
         }
     }
-    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {
